@@ -1,0 +1,33 @@
+# COBOL binaries
+*.exe
+*.obj
+
+# Java compiled files
+*.class
+*.jar
+*.war
+
+# VB temporary files
+*.vbp
+*.vbw
+*.exe
+
+# VS Code settings
+.vscode/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# Java (Maven)
+target/
+
+# Logs / temp
+*.log
+*.tmp
+*.vsidx
