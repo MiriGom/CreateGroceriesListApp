@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+</head>
+<body>
+    <h2>Register User</h2>
+
+    <!-- Registration Form -->
+    <form id="registerForm">
+        <label>Username:</label><br>
+        <input type="text" id="username" placeholder="Username" required><br><br>
+
+        <label>Email:</label><br>
+        <input type="email" id="email" placeholder="Email" required><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" id="password" placeholder="Password" required><br><br>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- Message display -->
+    <p id="message" style="color: green;"></p>
+
+    <!-- JavaScript to handle form submission -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("registerForm");
+            const message = document.getElementById("message");
+
+            form.addEventListener("submit", async function(e) {
+                e.preventDefault(); // Prevent page reload
+
+                // Collect values from the form
+                const user = {
+                    username: document.getElementById("username").value,
+                    email: document.getElementById("email").value,
+                    password: document.getElementById("password").value
+                };
+
+                try {
+                    // THIS is where your fetch goes
+                    const response = await fetch("/users/register", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify(user)
+                    });
+
+                    if (response.ok) {
+                        message.style.color = "green";
+                        message.innerText = "User registered successfully!";
+                        form.reset(); // clear the form
+                    } else {
+                        message.style.color = "red";
+                        message.innerText = "Error: " + response.status;
+                    }
+                } catch (error) {
+                    message.style.color = "red";
+                    message.innerText = "Error: " + error;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
