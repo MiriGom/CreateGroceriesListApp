@@ -4,8 +4,6 @@ import com.groceries.creategrocerieslistapp_backend.model.Product;
 import com.groceries.creategrocerieslistapp_backend.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -17,12 +15,8 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<Product> getUserProducts(@PathVariable Long userId) {
-        return productService.getUserProducts(userId);
+    public String addProduct(@RequestBody Product product) {
+        productService.addProduct(product);
+        return "Product added successfully!";
     }
 }

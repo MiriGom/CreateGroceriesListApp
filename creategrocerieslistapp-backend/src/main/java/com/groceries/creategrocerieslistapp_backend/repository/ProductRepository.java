@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Repository
 public class ProductRepository {
@@ -20,8 +19,13 @@ public class ProductRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Product save(Product product) {
+    public void save(Product product) {
+        if (product.getCreatedAt() == null) {
+            product.setCreatedAt(java.time.LocalDateTime.now());
+        }
+
         String sql = "INSERT INTO products (user_id, name, quantity, price, created_at) VALUES (?, ?, ?, ?, ?)";
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         jdbcTemplate.update(connection -> {
@@ -35,20 +39,5 @@ public class ProductRepository {
         }, keyHolder);
 
         product.setId(keyHolder.getKey().longValue());
-        return product;
-    }
-
-    public List<Product> findByUserId(Long userId) {
-        String sql = "SELECT * FROM products WHERE user_id = ?";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Product p = new Product();
-            p.setId(rs.getLong("id"));
-            p.setUserId(rs.getLong("user_id"));
-            p.setName(rs.getString("name"));
-            p.setQuantity(rs.getInt("quantity"));
-            p.setPrice(rs.getDouble("price"));
-            p.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-            return p;
-        }, userId);
     }
 }

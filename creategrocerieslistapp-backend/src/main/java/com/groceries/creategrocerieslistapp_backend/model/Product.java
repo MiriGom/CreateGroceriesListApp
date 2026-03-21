@@ -10,17 +10,9 @@ public class Product {
     private Double price;
     private LocalDateTime createdAt;
 
-    // Constructors
     public Product() {}
-    public Product(Long userId, String name, Integer quantity, Double price) {
-        this.userId = userId;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-        this.createdAt = LocalDateTime.now();
-    }
 
-    // Getters & Setters
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
