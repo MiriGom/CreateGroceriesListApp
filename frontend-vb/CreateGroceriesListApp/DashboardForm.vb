@@ -1,25 +1,56 @@
-﻿Imports System.Windows.Forms
+﻿Imports System.Net.Http
+Imports System.Text
+Imports Newtonsoft.Json
 
 Public Class DashboardForm
-    Inherits Form
 
-    Private lblWelcome As New Label()
-
-    Private userId As String
+    Private currentUserId As Integer
     Private username As String
+    Private client As New HttpClient()
 
-    Public Sub New(uId As String, uName As String)
-        userId = uId
-        username = uName
+    ' Constructor
+    Public Sub New(userId As Integer, userName As String)
+        InitializeComponent() ' 
 
-        Me.Text = "Dashboard"
-        Me.Size = New Drawing.Size(400, 200)
+        currentUserId = userId
+        userName = userName
 
-        lblWelcome.AutoSize = True
-        lblWelcome.Location = New Drawing.Point(50, 50)
-        lblWelcome.Text = "Welcome " & username & "! Your ID is " & userId
-
-        Me.Controls.Add(lblWelcome)
+        lblWelcome.Text = "Welcome " & userName & "! Your ID is " & currentUserId
     End Sub
+
+    Private Sub DashboardForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    End Sub
+
+
+    Private Sub btnAddProduct_Click(sender As Object, e As EventArgs) Handles btnAddProduct.Click
+        Try
+            Dim product = New With {
+                .userId = currentUserId,
+                .name = txtName.Text,
+                .quantity = CInt(txtQuantity.Text),
+                .price = CDbl(txtPrice.Text)
+            }
+
+            Dim json = JsonConvert.SerializeObject(product)
+            Dim content = New StringContent(json, Encoding.UTF8, "application/json")
+
+            Dim response = client.PostAsync("http://localhost:8080/products/add", content).Result
+
+            If response.IsSuccessStatusCode Then
+                MessageBox.Show("Product added!")
+                txtName.Clear()
+                txtQuantity.Clear()
+                txtPrice.Clear()
+            Else
+                MessageBox.Show("Error: " & response.StatusCode.ToString())
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error: " & ex.Message)
+        End Try
+    End Sub
+
+
 
 End Class
