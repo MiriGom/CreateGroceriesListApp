@@ -1,4 +1,5 @@
 package com.groceries.creategrocerieslistapp_backend.model;
+
 import java.time.LocalDateTime;
 
 public class User {
@@ -10,7 +11,6 @@ public class User {
     private Boolean isActive;
     private LocalDateTime createdAt;
 
-    // Constructors
     public User() {}
 
     public User(String username, String email, String password) {
@@ -19,10 +19,10 @@ public class User {
         this.password = password;
         this.role = "USER";
         this.isActive = true;
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(); 
     }
 
-    // Getters & setters 
+    // Getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -10,16 +10,10 @@ Public Class DashboardForm
 
     ' Constructor
     Public Sub New(userId As Integer, userName As String)
-        InitializeComponent() ' 
-
+        InitializeComponent()
         currentUserId = userId
         userName = userName
-
-        lblWelcome.Text = "Welcome " & userName & "! Your ID is " & currentUserId
-    End Sub
-
-    Private Sub DashboardForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        lblWelcome.Text = $"Welcome {userName}!"
     End Sub
 
 
@@ -51,6 +45,7 @@ Public Class DashboardForm
         End Try
     End Sub
 
+    Private Sub txtPrice_TextChanged(sender As Object, e As EventArgs) Handles txtPrice.TextChanged
 
-
+    End Sub
 End Class

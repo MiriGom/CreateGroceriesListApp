@@ -2,9 +2,9 @@ package com.groceries.creategrocerieslistapp_backend.controller;
 
 import com.groceries.creategrocerieslistapp_backend.model.User;
 import com.groceries.creategrocerieslistapp_backend.service.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -17,14 +17,17 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public ResponseEntity<String> register(@RequestBody User user) {
         userService.registerUser(user);
-        return user;
+        return ResponseEntity.ok("User registered successfully!");
     }
 
-    // New GET endpoint to fetch all users
-    @GetMapping("/all")
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestBody User user) {
+        User loggedUser = userService.login(user.getEmail(), user.getPassword());
+        if (loggedUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(loggedUser);
     }
 }

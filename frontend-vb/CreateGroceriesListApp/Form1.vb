@@ -3,13 +3,28 @@ Imports System.Text
 Imports Newtonsoft.Json
 
 Public Class Form1
-
-    Private client As HttpClient = New HttpClient()
+    Private client As New HttpClient()
 
     Private Sub btnRegister_Click(sender As Object, e As EventArgs) Handles btnRegister.Click
-
         Dim user = New With {
-        .username = txtUsername.Text,
+            .username = txtUsername.Text,
+            .email = txtEmail.Text,
+            .password = txtPassword.Text
+        }
+
+        Dim json = JsonConvert.SerializeObject(user)
+        Dim content = New StringContent(json, Encoding.UTF8, "application/json")
+        Dim response = client.PostAsync("http://localhost:8080/users/register", content).Result
+
+        If response.IsSuccessStatusCode Then
+            MessageBox.Show("User registered successfully!")
+        Else
+            MessageBox.Show("Error: " & response.StatusCode.ToString())
+        End If
+    End Sub
+
+    Private Sub btnLogin_Click(sender As Object, e As EventArgs) Handles btnLogin.Click
+        Dim user = New With {
         .email = txtEmail.Text,
         .password = txtPassword.Text
     }
@@ -17,42 +32,20 @@ Public Class Form1
         Dim json = JsonConvert.SerializeObject(user)
         Dim content = New StringContent(json, Encoding.UTF8, "application/json")
 
-        Try
-            Dim response = client.PostAsync("http://localhost:8080/users/register", content).Result
+        Dim response = client.PostAsync("http://localhost:8080/users/login", content).Result
 
-            If response.IsSuccessStatusCode Then
+        If response.IsSuccessStatusCode Then
+            ' Deserialize the returned user
+            Dim loggedUser = JsonConvert.DeserializeObject(Of User)(response.Content.ReadAsStringAsync().Result)
 
-
-                Dim responseBody = response.Content.ReadAsStringAsync().Result
-
-
-                Dim savedUser = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(responseBody)
-
-                Dim userId = savedUser("id").ToString()
-                Dim username = savedUser("username").ToString()
-
-
-                Dim dashboard As New DashboardForm(userId, username)
-                dashboard.Show()
-
-                Me.Hide()
-
-            Else
-                MessageBox.Show("Error: " & response.StatusCode.ToString())
-            End If
-
-        Catch ex As Exception
-            MessageBox.Show("Error: " & ex.Message)
-        End Try
-
-    End Sub
-
-
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles lblEmail.Click
-
-    End Sub
-
-    Private Sub Label2_Click(sender As Object, e As EventArgs)
-
+            ' Open Dashboard with user info
+            Dim dashboard As New DashboardForm(loggedUser.Id, loggedUser.Username)
+            dashboard.Show()
+            Me.Hide()
+        ElseIf response.StatusCode = Net.HttpStatusCode.Unauthorized Then
+            MessageBox.Show("Incorrect email or password.")
+        Else
+            MessageBox.Show("Login failed: " & response.StatusCode.ToString())
+        End If
     End Sub
 End Class
