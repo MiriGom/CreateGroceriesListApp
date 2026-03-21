@@ -29,11 +29,12 @@ Partial Class Form1
         lblUsername = New Label()
         lblEmail = New Label()
         lblPassword = New Label()
+        lblWelcome = New Label()
         SuspendLayout()
         ' 
         ' btnRegister
         ' 
-        btnRegister.Location = New Point(622, 279)
+        btnRegister.Location = New Point(259, 237)
         btnRegister.Name = "btnRegister"
         btnRegister.Size = New Size(94, 29)
         btnRegister.TabIndex = 0
@@ -88,11 +89,21 @@ Partial Class Form1
         lblPassword.TabIndex = 6
         lblPassword.Text = "Password"
         ' 
+        ' lblWelcome
+        ' 
+        lblWelcome.AutoSize = True
+        lblWelcome.Location = New Point(446, 50)
+        lblWelcome.Name = "lblWelcome"
+        lblWelcome.Size = New Size(53, 20)
+        lblWelcome.TabIndex = 7
+        lblWelcome.Text = "Label1"
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
+        Controls.Add(lblWelcome)
         Controls.Add(lblPassword)
         Controls.Add(lblEmail)
         Controls.Add(lblUsername)
@@ -113,5 +124,6 @@ Partial Class Form1
     Friend WithEvents lblUsername As Label
     Friend WithEvents lblEmail As Label
     Friend WithEvents lblPassword As Label
+    Friend WithEvents lblWelcome As Label
 
 End Class

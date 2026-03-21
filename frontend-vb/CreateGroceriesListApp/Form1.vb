@@ -7,28 +7,44 @@ Public Class Form1
     Private client As HttpClient = New HttpClient()
 
     Private Sub btnRegister_Click(sender As Object, e As EventArgs) Handles btnRegister.Click
-        ' Prepare user object
-        Dim user = New With {
-            .username = txtUsername.Text,
-            .email = txtEmail.Text,
-            .password = txtPassword.Text
-        }
 
-        ' Convert to JSON
+        Dim user = New With {
+        .username = txtUsername.Text,
+        .email = txtEmail.Text,
+        .password = txtPassword.Text
+    }
+
         Dim json = JsonConvert.SerializeObject(user)
         Dim content = New StringContent(json, Encoding.UTF8, "application/json")
 
-        ' Send POST request to Spring Boot backend
-        Dim response = client.PostAsync("http://localhost:8080/users/register", content).Result
-        If response.IsSuccessStatusCode Then
-            MessageBox.Show("User registered successfully!")
-            ' Optionally clear text boxes
-            txtUsername.Clear()
-            txtEmail.Clear()
-            txtPassword.Clear()
-        Else
-            MessageBox.Show("Error: " & response.StatusCode.ToString())
-        End If
+        Try
+            Dim response = client.PostAsync("http://localhost:8080/users/register", content).Result
+
+            If response.IsSuccessStatusCode Then
+
+
+                Dim responseBody = response.Content.ReadAsStringAsync().Result
+
+
+                Dim savedUser = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(responseBody)
+
+                Dim userId = savedUser("id").ToString()
+                Dim username = savedUser("username").ToString()
+
+
+                Dim dashboard As New DashboardForm(userId, username)
+                dashboard.Show()
+
+                Me.Hide()
+
+            Else
+                MessageBox.Show("Error: " & response.StatusCode.ToString())
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Error: " & ex.Message)
+        End Try
+
     End Sub
 
     Private Sub Label1_Click(sender As Object, e As EventArgs) Handles lblEmail.Click

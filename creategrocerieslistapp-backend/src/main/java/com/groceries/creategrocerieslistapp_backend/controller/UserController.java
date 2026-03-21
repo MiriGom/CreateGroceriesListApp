@@ -17,9 +17,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
+    public User register(@RequestBody User user) {
         userService.registerUser(user);
-        return "User saved successfully!";
+        return user;
     }
 
     // New GET endpoint to fetch all users
