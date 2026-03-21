@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        input, button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        #message {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Create Grocery List</h2>
+    <form id="listForm">
+        <label>List Name:</label>
+        <input type="text" id="listName" placeholder="Weekly Groceries" required>
+        <button type="submit">Create List</button>
+    </form>
+
+    <p id="welcomeMessage"></p>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const userId = params.get("userId");
+        const username = params.get("username");
+
+        const welcomeMessage = document.getElementById("welcomeMessage");
+        if (userId && username) {
+            welcomeMessage.innerText = `Hello ${username}, your user ID is ${userId}. Welcome to your dashboard!`;
+        } else {
+            welcomeMessage.innerText = "User info missing. Please register first.";
+        }
+    </script>
+</body>
+</html>
