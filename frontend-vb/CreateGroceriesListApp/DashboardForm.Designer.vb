@@ -30,6 +30,7 @@ Partial Class DashboardForm
         txtName = New TextBox()
         txtQuantity = New TextBox()
         txtPrice = New TextBox()
+        lstProducts = New ListBox()
         SuspendLayout()
         ' 
         ' btnAddProduct
@@ -98,11 +99,20 @@ Partial Class DashboardForm
         txtPrice.Size = New Size(125, 27)
         txtPrice.TabIndex = 7
         ' 
+        ' lstProducts
+        ' 
+        lstProducts.FormattingEnabled = True
+        lstProducts.Location = New Point(538, 47)
+        lstProducts.Name = "lstProducts"
+        lstProducts.Size = New Size(212, 344)
+        lstProducts.TabIndex = 8
+        ' 
         ' DashboardForm
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
+        Controls.Add(lstProducts)
         Controls.Add(txtPrice)
         Controls.Add(txtQuantity)
         Controls.Add(txtName)
@@ -125,4 +135,5 @@ Partial Class DashboardForm
     Friend WithEvents txtName As TextBox
     Friend WithEvents txtQuantity As TextBox
     Friend WithEvents txtPrice As TextBox
+    Friend WithEvents lstProducts As ListBox
 End Class

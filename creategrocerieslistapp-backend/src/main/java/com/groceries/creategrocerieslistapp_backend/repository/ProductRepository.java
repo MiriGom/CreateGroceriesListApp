@@ -2,13 +2,10 @@ package com.groceries.creategrocerieslistapp_backend.repository;
 
 import com.groceries.creategrocerieslistapp_backend.model.Product;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class ProductRepository {
@@ -20,24 +17,23 @@ public class ProductRepository {
     }
 
     public void save(Product product) {
-        if (product.getCreatedAt() == null) {
-            product.setCreatedAt(java.time.LocalDateTime.now());
-        }
+        String sql = "INSERT INTO products (user_id, name, quantity, price, created_at) VALUES (?, ?, ?, ?, NOW())";
+        jdbcTemplate.update(sql, product.getUserId(), product.getName(), product.getQuantity(), product.getPrice());
+    }
 
-        String sql = "INSERT INTO products (user_id, name, quantity, price, created_at) VALUES (?, ?, ?, ?, ?)";
+    public List<Product> findByUserId(Long userId) {
+        String sql = "SELECT * FROM products WHERE user_id = ?";
+        return jdbcTemplate.query(sql, new Object[]{userId}, (rs, rowNum) -> mapRowToProduct(rs));
+    }
 
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        jdbcTemplate.update(connection -> {
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setLong(1, product.getUserId());
-            ps.setString(2, product.getName());
-            ps.setInt(3, product.getQuantity());
-            ps.setDouble(4, product.getPrice());
-            ps.setTimestamp(5, Timestamp.valueOf(product.getCreatedAt()));
-            return ps;
-        }, keyHolder);
-
-        product.setId(keyHolder.getKey().longValue());
+    private Product mapRowToProduct(ResultSet rs) throws SQLException {
+        Product p = new Product();
+        p.setId(rs.getLong("id"));
+        p.setUserId(rs.getLong("user_id"));
+        p.setName(rs.getString("name"));
+        p.setQuantity(rs.getInt("quantity"));
+        p.setPrice(rs.getDouble("price"));
+        p.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        return p;
     }
 }

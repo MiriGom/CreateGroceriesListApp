@@ -10,13 +10,17 @@ Public Class DashboardForm
 
     ' Constructor
     Public Sub New(userId As Integer, userName As String)
-        InitializeComponent()
+        InitializeComponent() ' MUST call first
+
         currentUserId = userId
         userName = userName
-        lblWelcome.Text = $"Welcome {userName}!"
+
+        lblWelcome.Text = $"Welcome {userName}! Your ID is {currentUserId}"
+
+        LoadProducts()
     End Sub
 
-
+    ' Add Product Button
     Private Sub btnAddProduct_Click(sender As Object, e As EventArgs) Handles btnAddProduct.Click
         Try
             Dim product = New With {
@@ -36,6 +40,7 @@ Public Class DashboardForm
                 txtName.Clear()
                 txtQuantity.Clear()
                 txtPrice.Clear()
+                LoadProducts()
             Else
                 MessageBox.Show("Error: " & response.StatusCode.ToString())
             End If
@@ -45,7 +50,20 @@ Public Class DashboardForm
         End Try
     End Sub
 
-    Private Sub txtPrice_TextChanged(sender As Object, e As EventArgs) Handles txtPrice.TextChanged
+    ' Load products into ListBox
+    Private Sub LoadProducts()
+        Try
+            Dim json = client.GetStringAsync($"http://localhost:8080/products/user/{currentUserId}").Result
+            Dim products = JsonConvert.DeserializeObject(Of List(Of Product))(json)
 
+            lstProducts.Items.Clear()
+            For Each p In products
+                lstProducts.Items.Add($"{p.name} - Qty: {p.quantity} - Price: ${p.price}")
+            Next
+        Catch ex As Exception
+            MessageBox.Show("Error loading products: " & ex.Message)
+        End Try
     End Sub
+
 End Class
+

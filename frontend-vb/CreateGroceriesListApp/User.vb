@@ -1,4 +1,5 @@
-﻿Public Class User
+﻿Imports Microsoft.VisualBasic
+Public Class User
     Public Property id As Integer
     Public Property username As String
     Public Property email As String
