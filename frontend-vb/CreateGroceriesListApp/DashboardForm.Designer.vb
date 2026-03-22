@@ -31,6 +31,7 @@ Partial Class DashboardForm
         txtQuantity = New TextBox()
         txtPrice = New TextBox()
         lstProducts = New ListBox()
+        btnCalculateTotal = New Button()
         SuspendLayout()
         ' 
         ' btnAddProduct
@@ -107,11 +108,21 @@ Partial Class DashboardForm
         lstProducts.Size = New Size(212, 344)
         lstProducts.TabIndex = 8
         ' 
+        ' btnCalculateTotal
+        ' 
+        btnCalculateTotal.Location = New Point(495, 409)
+        btnCalculateTotal.Name = "btnCalculateTotal"
+        btnCalculateTotal.Size = New Size(94, 29)
+        btnCalculateTotal.TabIndex = 9
+        btnCalculateTotal.Text = "Calculate Total"
+        btnCalculateTotal.UseVisualStyleBackColor = True
+        ' 
         ' DashboardForm
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
+        Controls.Add(btnCalculateTotal)
         Controls.Add(lstProducts)
         Controls.Add(txtPrice)
         Controls.Add(txtQuantity)
@@ -136,4 +147,5 @@ Partial Class DashboardForm
     Friend WithEvents txtQuantity As TextBox
     Friend WithEvents txtPrice As TextBox
     Friend WithEvents lstProducts As ListBox
+    Friend WithEvents btnCalculateTotal As Button
 End Class
