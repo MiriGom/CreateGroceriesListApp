@@ -1,0 +1,48 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PRODUCT-TOTAL.
+
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT PRODUCT-FILE ASSIGN TO "products.txt"
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT TOTAL-FILE ASSIGN TO "total.txt"
+               ORGANIZATION IS LINE SEQUENTIAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       FD PRODUCT-FILE.
+       01 PRODUCT-RECORD.
+           05 PROD-NAME   PIC X(20).
+           05 PROD-QTY    PIC 9(5).
+           05 PROD-PRICE  PIC 9(7)V99.
+
+       FD TOTAL-FILE.
+       01 TOTAL-RECORD PIC 9(9)V99.
+
+       WORKING-STORAGE SECTION.
+       01 TOTAL        PIC 9(9)V99 VALUE 0.
+       01 EOF-PRODUCT  PIC X VALUE "N".
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           OPEN INPUT PRODUCT-FILE
+           OPEN OUTPUT TOTAL-FILE
+
+           PERFORM UNTIL EOF-PRODUCT = "Y"
+               READ PRODUCT-FILE
+                   AT END
+                       MOVE "Y" TO EOF-PRODUCT
+                   NOT AT END
+                       COMPUTE TOTAL = TOTAL + PROD-QTY * PROD-PRICE
+               END-READ
+           END-PERFORM
+
+           MOVE TOTAL TO TOTAL-RECORD
+           WRITE TOTAL-RECORD
+           CLOSE PRODUCT-FILE TOTAL-FILE
+
+           DISPLAY "Total calculated: " TOTAL
+           STOP RUN.
+
+       END PROGRAM PRODUCT-TOTAL.
