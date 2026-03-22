@@ -32,6 +32,7 @@ Partial Class DashboardForm
         txtPrice = New TextBox()
         lstProducts = New ListBox()
         btnCalculateTotal = New Button()
+        btnClearList = New Button()
         SuspendLayout()
         ' 
         ' btnAddProduct
@@ -103,25 +104,35 @@ Partial Class DashboardForm
         ' lstProducts
         ' 
         lstProducts.FormattingEnabled = True
-        lstProducts.Location = New Point(538, 47)
+        lstProducts.Location = New Point(538, 23)
         lstProducts.Name = "lstProducts"
         lstProducts.Size = New Size(212, 344)
         lstProducts.TabIndex = 8
         ' 
         ' btnCalculateTotal
         ' 
-        btnCalculateTotal.Location = New Point(495, 409)
+        btnCalculateTotal.Location = New Point(538, 409)
         btnCalculateTotal.Name = "btnCalculateTotal"
-        btnCalculateTotal.Size = New Size(94, 29)
+        btnCalculateTotal.Size = New Size(212, 29)
         btnCalculateTotal.TabIndex = 9
         btnCalculateTotal.Text = "Calculate Total"
         btnCalculateTotal.UseVisualStyleBackColor = True
+        ' 
+        ' btnClearList
+        ' 
+        btnClearList.Location = New Point(538, 373)
+        btnClearList.Name = "btnClearList"
+        btnClearList.Size = New Size(94, 29)
+        btnClearList.TabIndex = 10
+        btnClearList.Text = "Trash List"
+        btnClearList.UseVisualStyleBackColor = True
         ' 
         ' DashboardForm
         ' 
         AutoScaleDimensions = New SizeF(8F, 20F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(800, 450)
+        Controls.Add(btnClearList)
         Controls.Add(btnCalculateTotal)
         Controls.Add(lstProducts)
         Controls.Add(txtPrice)
@@ -148,4 +159,5 @@ Partial Class DashboardForm
     Friend WithEvents txtPrice As TextBox
     Friend WithEvents lstProducts As ListBox
     Friend WithEvents btnCalculateTotal As Button
+    Friend WithEvents btnClearList As Button
 End Class
