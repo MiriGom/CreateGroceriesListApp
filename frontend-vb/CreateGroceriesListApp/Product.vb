@@ -1,15 +1,17 @@
 ﻿Public Class Product
-
-    Public Property id As Long
-    Public Property userId As Long
     Public Property name As String
     Public Property quantity As Integer
     Public Property price As Double
-    Public Property createdAt As DateTime
 
+    ' This property controls what shows in the ListBox
+    Public ReadOnly Property DisplayName As String
+        Get
+            Return $"{name} - Qty: {quantity} - Price: ${price:F2}"
+        End Get
+    End Property
 
     Public Overrides Function ToString() As String
-        ' This will be what shows in the ListBox
-        Return $"{Name} - Qty: {Quantity}, Price: {Price:C}"
+        ' ListBox will automatically call ToString, so this ensures proper display
+        Return DisplayName
     End Function
 End Class
